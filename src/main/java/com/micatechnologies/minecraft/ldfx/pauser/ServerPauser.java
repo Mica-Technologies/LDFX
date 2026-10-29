@@ -106,8 +106,8 @@ public final class ServerPauser {
             try {
                 Class<?> sum = Class.forName("com.micatechnologies.minecraft.sum.SumConfig");
                 active = (Boolean) sum.getMethod("isPauserEnabled").invoke(null);
-            } catch (ClassNotFoundException e) {
-                // SUM not installed.
+            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                // SUM not installed, or a SUM without its own pauser.
             } catch (ReflectiveOperationException | RuntimeException e) {
                 Ldfx.LOGGER.warn("LDFX pauser: could not read SUM's pauser setting; assuming it is off", e);
             }
