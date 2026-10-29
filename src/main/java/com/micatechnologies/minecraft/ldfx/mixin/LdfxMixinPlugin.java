@@ -29,6 +29,17 @@ public class LdfxMixinPlugin implements IMixinConfigPlugin {
         switch (name) {
             case "MixinMinecraftTaskBudget":
                 return c.smoothChunkLoading;
+            case "MixinNetHandlerPartialRebuild":
+                return c.partialRebuilds;
+            case "MixinNetHandlerChunkResend":
+                return c.chunkResendFix;
+            case "MixinWorldEntityUnload":
+                return c.fastEntityUnload;
+            case "MixinChunkProviderClientCache":
+            case "MixinNetHandlerChunkCache":
+                return c.chunkCache;
+            case "MixinEntityRenderCap":
+                return c.entityRenderDistances.length > 0;
             default:
                 return true;
         }
