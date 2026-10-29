@@ -32,6 +32,8 @@ public final class LdfxConfig {
     public final boolean fastEntityUnload;
     /** Per entity type: the farthest it is drawn, as "id=blocks". */
     public final String[] entityRenderDistances;
+    /** Turn on Forge's alwaysSetupTerrainOffThread: no chunk meshes built on the main thread. */
+    public final boolean terrainOffThread;
     /** Keep the blocks of chunks the server unloads, for drawing. */
     public final boolean chunkCache;
     /** Most chunks kept in the client chunk cache. */
@@ -60,6 +62,10 @@ public final class LdfxConfig {
         entityRenderDistances = c.getStringList("render_distance", cat,
                 new String[] {"minecraft:item_frame=64", "minecraft:armor_stand=64", "minecraft:painting=96"},
                 "Client: the farthest each entity type is drawn, in blocks, as id=blocks. Empty the list to keep vanilla's distances.");
+
+        terrainOffThread = c.getBoolean("terrain_off_thread", "chunk_updates", true,
+                "Turn on Forge's alwaysSetupTerrainOffThread, so chunk sections near the player are rebuilt on the worker threads\n"
+                + "instead of the main thread (vanilla builds them in the frame, which stutters when many change at once).");
 
         cat = "client_chunk_cache";
         c.setCategoryComment(cat, "Client: keep the blocks of chunks the server unloads, so flying back over an area does not rebuild it,\n"
