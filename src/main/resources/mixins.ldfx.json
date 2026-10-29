@@ -4,7 +4,10 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
+  "plugin": "com.micatechnologies.minecraft.ldfx.mixin.LdfxMixinPlugin",
   "mixins": [],
-  "client": [],
+  "client": [
+    "MixinMinecraftTaskBudget"
+  ],
   "server": []
 }
