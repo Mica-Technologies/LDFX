@@ -34,6 +34,21 @@ public final class LdfxConfig {
     public final String[] entityRenderDistances;
     /** Turn on Forge's alwaysSetupTerrainOffThread: no chunk meshes built on the main thread. */
     public final boolean terrainOffThread;
+    /** Mobs far from players decide on AI goals less often. */
+    public final boolean aiThrottle;
+    public final int aiNearBlocks;
+    public final int aiFarBlocks;
+    public final int aiMidRate;
+    public final int aiFarRate;
+    /** Spigot-style entity activation range (off by default). */
+    public final boolean activationRange;
+    public final int activationMonsterBlocks;
+    public final int activationOtherBlocks;
+    public final int activationWakeTicks;
+    public final String[] activationExempt;
+    /** Idle hoppers back off instead of retrying every tick. */
+    public final boolean hopperIdle;
+    public final int hopperIdleTicks;
     /** Lower the frame rate while idle or in the background (FPS Reducer's feature set). */
     public final boolean fpsReducer;
     public final double fpsIdleSeconds;
@@ -86,6 +101,32 @@ public final class LdfxConfig {
                 + "Cached chunks are scenery: no entities, no ticking; the server's copy replaces them when it sends one.");
         chunkCache = c.getBoolean("enabled", cat, true, "Turn the feature on.");
         chunkCacheMax = c.getInt("max_chunks", cat, 4096, 64, 65536, "Most chunks kept.");
+
+        cat = "server_mobs";
+        c.setCategoryComment(cat, "Server (and singleplayer): cheaper mob AI and ticking far from players.");
+        aiThrottle = c.getBoolean("distance_scaled_ai", cat, true,
+                "Mobs far from every player decide on new AI goals less often (vanilla: every 3 ticks). Goals already running\n"
+                + "still update every tick.");
+        aiNearBlocks = c.getInt("ai_near_blocks", cat, 32, 8, 256, "Within this distance of a player, mobs keep vanilla's 3-tick interval.");
+        aiFarBlocks = c.getInt("ai_far_blocks", cat, 64, 16, 512, "Beyond this distance, mobs use ai_far_interval.");
+        aiMidRate = c.getInt("ai_mid_interval", cat, 6, 3, 40, "Ticks between goal decisions between ai_near_blocks and ai_far_blocks.");
+        aiFarRate = c.getInt("ai_far_interval", cat, 12, 3, 100, "Ticks between goal decisions beyond ai_far_blocks.");
+        activationRange = c.getBoolean("activation_range", cat, false,
+                "Spigot-style activation range: mobs beyond the range from every player skip most ticks (they still age and\n"
+                + "get a full tick every wake_ticks). Mobs that are fighting, hurt, burning, ridden, leashed, named or swimming\n"
+                + "always tick. Off by default: far mobs visibly pause.");
+        activationMonsterBlocks = c.getInt("activation_monster_blocks", cat, 32, 8, 256, "Range for hostile mobs.");
+        activationOtherBlocks = c.getInt("activation_other_blocks", cat, 24, 8, 256, "Range for every other mob (animals, villagers, NPCs).");
+        activationWakeTicks = c.getInt("activation_wake_ticks", cat, 20, 1, 200, "An inactive mob still gets one full tick this often.");
+        activationExempt = c.getStringList("activation_exempt", cat, new String[0],
+                "Entity ids that always tick, for example customnpcs:customnpc.");
+
+        cat = "hoppers";
+        c.setCategoryComment(cat, "Server (and singleplayer): hopper performance.");
+        hopperIdle = c.getBoolean("idle_backoff", cat, true,
+                "A hopper that found nothing to move waits idle_backoff_ticks before looking again (vanilla looks every tick).\n"
+                + "Hoppers that are moving items keep vanilla's timing.");
+        hopperIdleTicks = c.getInt("idle_backoff_ticks", cat, 4, 1, 8, "Ticks an idle hopper waits.");
 
         cat = "fps_reducer";
         c.setCategoryComment(cat, "Client: lower the frame rate while you are away or the game is in the background, and the volume while\n"

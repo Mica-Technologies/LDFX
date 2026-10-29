@@ -6,6 +6,10 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "com.micatechnologies.minecraft.ldfx.mixin.LdfxMixinPlugin",
   "mixins": [
+    "AccessorEntityAITasks",
+    "MixinEntityLivingActivity",
+    "MixinTileEntityHopperIdle",
+    "MixinWorldActivationRange",
     "MixinWorldEntityUnload"
   ],
   "client": [

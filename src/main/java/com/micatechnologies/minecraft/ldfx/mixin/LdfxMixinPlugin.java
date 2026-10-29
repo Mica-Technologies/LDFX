@@ -40,6 +40,13 @@ public class LdfxMixinPlugin implements IMixinConfigPlugin {
                 return c.chunkCache;
             case "MixinMinecraftFramePacing":
                 return c.fpsReducer;
+            case "MixinEntityLivingActivity":
+            case "AccessorEntityAITasks":
+                return c.aiThrottle || c.activationRange;
+            case "MixinWorldActivationRange":
+                return c.activationRange;
+            case "MixinTileEntityHopperIdle":
+                return c.hopperIdle;
             case "MixinEntityRenderCap":
                 return c.entityRenderDistances.length > 0;
             default:
