@@ -53,6 +53,17 @@ public class Ldfx {
         if (LdfxConfig.get().pauserEnabled && LdfxConfig.get().pauserWhenAllAfk) {
             MinecraftForge.EVENT_BUS.register(new com.micatechnologies.minecraft.ldfx.pauser.AfkTracker.Events());
         }
+        if (LdfxConfig.get().chunkSendProfiling) {
+            MinecraftForge.EVENT_BUS.register(new com.micatechnologies.minecraft.ldfx.chunk.ChunkSendProfiler());
+            LOGGER.info("LDFX: chunk send profiling is on (debug.chunk_send_profiling)");
+        }
+    }
+
+    @EventHandler
+    public void serverStarting(net.minecraftforge.fml.common.event.FMLServerStartingEvent event) {
+        if (LdfxConfig.get().chunkSendProfiling) {
+            event.registerServerCommand(new com.micatechnologies.minecraft.ldfx.chunk.ChunkSendProfiler.Command());
+        }
     }
 
     /** Forge reads its config again when it is saved from the mod list; set the flag again after. */

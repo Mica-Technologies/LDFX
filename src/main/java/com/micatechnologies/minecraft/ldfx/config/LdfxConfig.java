@@ -51,6 +51,9 @@ public final class LdfxConfig {
     public final boolean pauserWhenAllAfk;
     public final int pauserAfkSeconds;
     public final boolean pauserDynmap;
+    /** Time chunk sending on the server thread (diagnostic). */
+    public final boolean chunkSendProfiling;
+    public final int chunkProfilingReportSeconds;
     /** Idle hoppers back off instead of retrying every tick. */
     public final boolean hopperIdle;
     public final int hopperIdleTicks;
@@ -138,6 +141,13 @@ public final class LdfxConfig {
         pauserDynmap = c.getBoolean("pause_dynmap", cat, false,
                 "Also pause Dynmap's renders and zoom-out processing while nobody is online (it resumes at the first login).\n"
                 + "A Dynmap with a backlog of tiles otherwise keeps an empty server busy.");
+
+        cat = "debug";
+        c.setCategoryComment(cat, "Diagnostics. Off by default; they cost a little time while on.");
+        chunkSendProfiling = c.getBoolean("chunk_send_profiling", cat, false,
+                "Time how long the server thread spends loading, building and sending chunks to players (block data, tile\n"
+                + "entity tags by type, block updates). Logs a summary every report_seconds; '/ldfxstats chunks [reset]' shows it.");
+        chunkProfilingReportSeconds = c.getInt("report_seconds", cat, 30, 5, 3600, "Seconds between chunk sending summaries in the log.");
 
         cat = "hoppers";
         c.setCategoryComment(cat, "Server (and singleplayer): hopper performance.");

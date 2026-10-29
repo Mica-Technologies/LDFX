@@ -49,6 +49,9 @@ public class LdfxMixinPlugin implements IMixinConfigPlugin {
             case "MixinWorldServerPauser":
             case "MixinEntityTrackerPauser":
                 return c.pauserEnabled;
+            case "MixinSPacketChunkDataProfiling":
+            case "MixinPlayerChunkMapEntryProfiling":
+                return c.chunkSendProfiling;
             case "MixinTileEntityHopperIdle":
                 return c.hopperIdle;
             case "MixinEntityRenderCap":

@@ -10,6 +10,8 @@
     "MixinEntityLivingActivity",
     "MixinEntityTrackerPauser",
     "MixinMinecraftServerPauser",
+    "MixinPlayerChunkMapEntryProfiling",
+    "MixinSPacketChunkDataProfiling",
     "MixinTileEntityHopperIdle",
     "MixinWorldActivationRange",
     "MixinWorldServerPauser",
