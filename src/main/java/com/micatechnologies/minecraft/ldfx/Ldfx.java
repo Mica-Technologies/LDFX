@@ -50,6 +50,9 @@ public class Ldfx {
                 com.micatechnologies.minecraft.ldfx.fps.FpsReducer.start(LdfxConfig.get());
             }
         }
+        if (LdfxConfig.get().pauserEnabled && LdfxConfig.get().pauserWhenAllAfk) {
+            MinecraftForge.EVENT_BUS.register(new com.micatechnologies.minecraft.ldfx.pauser.AfkTracker.Events());
+        }
     }
 
     /** Forge reads its config again when it is saved from the mod list; set the flag again after. */

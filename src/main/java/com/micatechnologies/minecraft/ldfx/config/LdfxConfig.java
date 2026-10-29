@@ -46,6 +46,11 @@ public final class LdfxConfig {
     public final int activationOtherBlocks;
     public final int activationWakeTicks;
     public final String[] activationExempt;
+    /** Freeze the server while nobody is online (taken over from Server Utility Mod). */
+    public final boolean pauserEnabled;
+    public final boolean pauserWhenAllAfk;
+    public final int pauserAfkSeconds;
+    public final boolean pauserDynmap;
     /** Idle hoppers back off instead of retrying every tick. */
     public final boolean hopperIdle;
     public final int hopperIdleTicks;
@@ -120,6 +125,19 @@ public final class LdfxConfig {
         activationWakeTicks = c.getInt("activation_wake_ticks", cat, 20, 1, 200, "An inactive mob still gets one full tick this often.");
         activationExempt = c.getStringList("activation_exempt", cat, new String[0],
                 "Entity ids that always tick, for example customnpcs:customnpc.");
+
+        cat = "server_pauser";
+        c.setCategoryComment(cat, "Dedicated servers: freeze the server while nobody is online, so an empty server costs almost nothing.\n"
+                + "World loop, tick events (which many mods tick from) and autosaves stop; logins still work and the first player\n"
+                + "to join resumes everything. The world is saved once as the pause begins. Stays off while Server Utility Mod's\n"
+                + "own pauser is enabled.");
+        pauserEnabled = c.getBoolean("enabled", cat, true, "Turn the feature on.");
+        pauserWhenAllAfk = c.getBoolean("pause_when_all_afk", cat, false,
+                "Also freeze the worlds (not tick events) while every online player is AFK. Off by default so AFK farms keep running.");
+        pauserAfkSeconds = c.getInt("afk_seconds", cat, 300, 10, 86400, "Seconds without moving, looking around, chatting or a command before a player counts as AFK.");
+        pauserDynmap = c.getBoolean("pause_dynmap", cat, false,
+                "Also pause Dynmap's renders and zoom-out processing while nobody is online (it resumes at the first login).\n"
+                + "A Dynmap with a backlog of tiles otherwise keeps an empty server busy.");
 
         cat = "hoppers";
         c.setCategoryComment(cat, "Server (and singleplayer): hopper performance.");

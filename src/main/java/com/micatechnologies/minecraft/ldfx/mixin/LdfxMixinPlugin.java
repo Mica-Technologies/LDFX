@@ -45,6 +45,10 @@ public class LdfxMixinPlugin implements IMixinConfigPlugin {
                 return c.aiThrottle || c.activationRange;
             case "MixinWorldActivationRange":
                 return c.activationRange;
+            case "MixinMinecraftServerPauser":
+            case "MixinWorldServerPauser":
+            case "MixinEntityTrackerPauser":
+                return c.pauserEnabled;
             case "MixinTileEntityHopperIdle":
                 return c.hopperIdle;
             case "MixinEntityRenderCap":

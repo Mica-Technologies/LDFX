@@ -8,8 +8,11 @@
   "mixins": [
     "AccessorEntityAITasks",
     "MixinEntityLivingActivity",
+    "MixinEntityTrackerPauser",
+    "MixinMinecraftServerPauser",
     "MixinTileEntityHopperIdle",
     "MixinWorldActivationRange",
+    "MixinWorldServerPauser",
     "MixinWorldEntityUnload"
   ],
   "client": [
