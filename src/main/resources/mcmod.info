@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "${modid}",
+    "name": "${modname}",
+    "description": "Bug fixes and performance improvements for Minecraft 1.12.2: smoother chunk loading, fewer wasted chunk rebuilds, cheaper entity and tile entity handling. Works with or without OptiFine, on clients, servers, or both.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "credits": "Mica Technologies",
+    "logoFile": "",
+    "url": "https://github.com/Mica-Technologies/LDFX",
+    "updateUrl": "",
+    "authorList": ["Mica Technologies"],
+    "dependencies": [],
+    "dependants": [],
+    "requiredMods": [],
+    "useDependencyInformation": "true"
+  }
+]

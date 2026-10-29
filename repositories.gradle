@@ -1,0 +1,9 @@
+// Add any additional repositories for your dependencies here.
+//
+// The GTCEu buildscript already wires CurseMaven, Modrinth, BlameJared and the other
+// well-known 1.12.2 repositories (see `includeWellKnownRepositories` in
+// buildscript.properties), so most mod dependencies need nothing here.
+
+repositories {
+    // Intentionally empty for now.
+}

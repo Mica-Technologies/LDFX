@@ -1,0 +1,55 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Compiled artifacts
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+
+# Minecraft modding (Forge/Fabric dev environment)
+run/
+logs/
+crash-reports/
+
+# OS cruft
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Logs and temp
+*.log
+*.tmp
+*~
+
+# Secrets
+*.env
+.env.*
+*credentials*
+
+# Local-only Claude Code state
+.claude/settings.local.json
+
+# Output of .github/scripts/server-smoke-test.sh when run locally (Minecraft mod repos).
+server-smoke.log
+
+# Agent working notes and implementation plans. Local scratch by design, matching the
+# sibling Mica mods.
+docs/AGENT-PLANS/
+
+# Local reference: cloned third-party mod source (other optimization mods)
+# for analysis only. Never committed.
+example-source/
+
+# x86_64 LWJGL2 natives for the `runClient -Prosetta` Apple Silicon path (see addon.gradle).
+.rosetta-natives/
