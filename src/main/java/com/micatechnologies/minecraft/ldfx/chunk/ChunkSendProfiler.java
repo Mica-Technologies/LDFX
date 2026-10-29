@@ -15,13 +15,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 /**
- * Main-thread timing of chunk sending, when {@code debug.chunk_send_profiling} is on: the timing
+ * Main-thread timing of chunk loading and sending, when {@code debug.chunk_send_profiling} is on: the timing
  * mixins feed {@link #STATS}, a summary goes to the log every {@code report_seconds}, and
  * {@code /ldfxstats chunks [reset]} shows the current window.
  */
 public final class ChunkSendProfiler {
 
     public static final ChunkSendStats STATS = new ChunkSendStats(System.nanoTime());
+
+    /** True while a loaded chunk is being added to the world, so tile entity {@code onLoad} is counted. */
+    public static boolean inChunkOnLoad;
 
     private long lastReport = System.nanoTime();
 
@@ -38,7 +41,8 @@ public final class ChunkSendProfiler {
         }
         long now = System.nanoTime();
         if (now - lastReport >= LdfxConfig.get().chunkProfilingReportSeconds * 1_000_000_000L) {
-            if (STATS.count(ChunkSendStats.SEND) > 0 || STATS.count(ChunkSendStats.UPDATE) > 0 || STATS.count(ChunkSendStats.LOAD) > 0) {
+            if (STATS.count(ChunkSendStats.SEND) > 0 || STATS.count(ChunkSendStats.UPDATE) > 0 || STATS.count(ChunkSendStats.LOAD) > 0
+                    || STATS.count(ChunkSendStats.GENERATE) > 0) {
                 for (String line : STATS.report(now)) {
                     Ldfx.LOGGER.info("LDFX {}", line);
                 }

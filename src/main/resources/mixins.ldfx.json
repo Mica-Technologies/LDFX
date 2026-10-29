@@ -7,6 +7,9 @@
   "plugin": "com.micatechnologies.minecraft.ldfx.mixin.LdfxMixinPlugin",
   "mixins": [
     "AccessorEntityAITasks",
+    "MixinAnvilChunkLoaderProfiling",
+    "MixinChunkIOProviderProfiling",
+    "MixinChunkProviderServerProfiling",
     "MixinEntityLivingActivity",
     "MixinEntityTrackerPauser",
     "MixinMinecraftServerPauser",
@@ -15,6 +18,7 @@
     "MixinTileEntityHopperIdle",
     "MixinWorldActivationRange",
     "MixinWorldServerPauser",
+    "MixinWorldTileOnLoadProfiling",
     "MixinWorldEntityUnload"
   ],
   "client": [

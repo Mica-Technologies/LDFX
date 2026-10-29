@@ -145,9 +145,10 @@ public final class LdfxConfig {
         cat = "debug";
         c.setCategoryComment(cat, "Diagnostics. Off by default; they cost a little time while on.");
         chunkSendProfiling = c.getBoolean("chunk_send_profiling", cat, false,
-                "Time how long the server thread spends loading, building and sending chunks to players (block data, tile\n"
-                + "entity tags by type, block updates). Logs a summary every report_seconds; '/ldfxstats chunks [reset]' shows it.");
-        chunkProfilingReportSeconds = c.getInt("report_seconds", cat, 30, 5, 3600, "Seconds between chunk sending summaries in the log.");
+                "Time how long the server thread spends loading, building and sending chunks to players (chunk loads by part,\n"
+                + "with tile entities and entities by type; block data, tile entity tags by type, block updates).\n"
+                + "Logs a summary every report_seconds; '/ldfxstats chunks [reset]' shows it.");
+        chunkProfilingReportSeconds = c.getInt("report_seconds", cat, 30, 5, 3600, "Seconds between chunk loading and sending summaries in the log.");
 
         cat = "hoppers";
         c.setCategoryComment(cat, "Server (and singleplayer): hopper performance.");

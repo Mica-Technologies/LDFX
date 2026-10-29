@@ -14,8 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Times the server thread's chunk sending per {@link PlayerChunkMapEntry}
- * ({@code debug.chunk_send_profiling}): getting a chunk for players ({@code load}, only calls that
- * had no chunk yet), sending a new chunk to its players ({@code send}, only calls that sent it), and
+ * ({@code debug.chunk_send_profiling}): sending a new chunk to its players ({@code send}, only calls that sent it), and
  * sending block changes in an already-sent chunk ({@code update}, only calls with changes).
  */
 @Mixin(PlayerChunkMapEntry.class)
@@ -31,25 +30,10 @@ public abstract class MixinPlayerChunkMapEntryProfiling {
     private int changes;
 
     @Unique
-    private long ldfx$loadStart = -1;
-
-    @Unique
     private long ldfx$sendStart = -1;
 
     @Unique
     private long ldfx$updateStart = -1;
-
-    @Inject(method = "providePlayerChunk", at = @At("HEAD"))
-    private void ldfx$loadHead(boolean canGenerate, CallbackInfoReturnable<Boolean> cir) {
-        ldfx$loadStart = chunk == null ? System.nanoTime() : -1;
-    }
-
-    @Inject(method = "providePlayerChunk", at = @At("RETURN"))
-    private void ldfx$loadReturn(boolean canGenerate, CallbackInfoReturnable<Boolean> cir) {
-        if (ldfx$loadStart >= 0 && chunk != null) {
-            ChunkSendProfiler.STATS.add(ChunkSendStats.LOAD, System.nanoTime() - ldfx$loadStart);
-        }
-    }
 
     @Inject(method = "sendToPlayers", at = @At("HEAD"))
     private void ldfx$sendHead(CallbackInfoReturnable<Boolean> cir) {
