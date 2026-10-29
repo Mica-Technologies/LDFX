@@ -38,6 +38,8 @@ public class LdfxMixinPlugin implements IMixinConfigPlugin {
             case "MixinChunkProviderClientCache":
             case "MixinNetHandlerChunkCache":
                 return c.chunkCache;
+            case "MixinMinecraftFramePacing":
+                return c.fpsReducer;
             case "MixinEntityRenderCap":
                 return c.entityRenderDistances.length > 0;
             default:

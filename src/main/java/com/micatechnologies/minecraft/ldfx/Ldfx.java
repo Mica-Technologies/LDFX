@@ -4,6 +4,7 @@ import com.micatechnologies.minecraft.ldfx.config.LdfxConfig;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -40,6 +41,14 @@ public class Ldfx {
         if (event.getSide().isClient() && LdfxConfig.get().terrainOffThread) {
             applyTerrainOffThread();
             MinecraftForge.EVENT_BUS.register(this);
+        }
+        if (event.getSide().isClient() && LdfxConfig.get().fpsReducer) {
+            String other = Loader.isModLoaded("ldog") ? "LDOG" : Loader.isModLoaded("fpsreducer") ? "FPS Reducer" : null;
+            if (other != null) {
+                LOGGER.info("LDFX: {} is installed, so LDFX's FPS reducer stays off", other);
+            } else {
+                com.micatechnologies.minecraft.ldfx.fps.FpsReducer.start(LdfxConfig.get());
+            }
         }
     }
 

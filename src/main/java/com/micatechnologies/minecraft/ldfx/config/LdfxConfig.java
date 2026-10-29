@@ -34,6 +34,19 @@ public final class LdfxConfig {
     public final String[] entityRenderDistances;
     /** Turn on Forge's alwaysSetupTerrainOffThread: no chunk meshes built on the main thread. */
     public final boolean terrainOffThread;
+    /** Lower the frame rate while idle or in the background (FPS Reducer's feature set). */
+    public final boolean fpsReducer;
+    public final double fpsIdleSeconds;
+    public final int fpsIdleFps;
+    public final int fpsBackgroundFps;
+    /** "off", "riding_or_flying" or "always": which player movement counts as activity. */
+    public final String fpsMovement;
+    public final boolean fpsHeldMouseCounts;
+    /** Master volume multiplier while the window is in the background; 1 leaves it alone. */
+    public final double fpsBackgroundVolume;
+    public final boolean fpsHud;
+    public final boolean fpsHudCpu;
+    public final String fpsHudCorner;
     /** Keep the blocks of chunks the server unloads, for drawing. */
     public final boolean chunkCache;
     /** Most chunks kept in the client chunk cache. */
@@ -73,6 +86,25 @@ public final class LdfxConfig {
                 + "Cached chunks are scenery: no entities, no ticking; the server's copy replaces them when it sends one.");
         chunkCache = c.getBoolean("enabled", cat, true, "Turn the feature on.");
         chunkCacheMax = c.getInt("max_chunks", cat, 4096, 64, 65536, "Most chunks kept.");
+
+        cat = "fps_reducer";
+        c.setCategoryComment(cat, "Client: lower the frame rate while you are away or the game is in the background, and the volume while\n"
+                + "it is in the background (the feature set of FPS Reducer, which LDFX replaces). Your own options are never changed.\n"
+                + "Steps aside if LDOG or FPS Reducer is installed. '/ldfx fps on|off|reduce|status' controls it for the session.");
+        fpsReducer = c.getBoolean("enabled", cat, true, "Turn the feature on.");
+        fpsIdleSeconds = c.getFloat("idle_seconds", cat, 300f, 0f, 3600f, "Seconds without input before the frame rate drops; 0 never drops it for idling.");
+        fpsIdleFps = c.getInt("idle_fps", cat, 10, 1, 120, "Frame rate while idle, or after the 'Reduce FPS now' key.");
+        fpsBackgroundFps = c.getInt("background_fps", cat, 10, 0, 120, "Frame rate while the window is in the background; 0 leaves it alone.");
+        fpsMovement = c.getString("movement_counts", cat, "riding_or_flying",
+                "Which player movement counts as activity: off, riding_or_flying (so a long flight or ride does not idle), or always.",
+                new String[] {"off", "riding_or_flying", "always"});
+        fpsHeldMouseCounts = c.getBoolean("held_mouse_button_counts", cat, true, "A mouse button held down counts as activity.");
+        fpsBackgroundVolume = c.getFloat("background_volume", cat, 0.2f, 0f, 1f,
+                "Master volume multiplier while the window is in the background; 1 leaves it alone, 0 mutes.");
+        fpsHud = c.getBoolean("hud", cat, false, "Show the frame rate on screen.");
+        fpsHudCpu = c.getBoolean("hud_cpu", cat, false, "Also show the game's CPU use.");
+        fpsHudCorner = c.getString("hud_corner", cat, "top_left", "Where the HUD sits.",
+                new String[] {"top_left", "top_right", "bottom_left", "bottom_right"});
         if (c.hasChanged()) {
             c.save();
         }

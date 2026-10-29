@@ -11,6 +11,7 @@
   "client": [
     "MixinChunkProviderClientCache",
     "MixinEntityRenderCap",
+    "MixinMinecraftFramePacing",
     "MixinMinecraftTaskBudget",
     "MixinNetHandlerChunkCache",
     "MixinNetHandlerChunkResend",
