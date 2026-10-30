@@ -48,6 +48,7 @@ public final class LdfxConfig {
     public final String[] activationExempt;
     /** Freeze the server while nobody is online (taken over from Server Utility Mod). */
     public final boolean pauserEnabled;
+    public final int pauserEmptyGraceSeconds;
     public final boolean pauserWhenAllAfk;
     public final int pauserAfkSeconds;
     public final boolean pauserDynmap;
@@ -135,6 +136,9 @@ public final class LdfxConfig {
                 + "to join resumes everything. The world is saved once as the pause begins. Stays off while Server Utility Mod's\n"
                 + "own pauser is enabled.");
         pauserEnabled = c.getBoolean("enabled", cat, true, "Turn the feature on.");
+        pauserEmptyGraceSeconds = c.getInt("empty_grace_seconds", cat, 30, 0, 600,
+                "Seconds the server stays empty before it pauses, so mods can finish what the last logout started (Dynmap marking\n"
+                + "the player gone, saving player data). Also applies after startup. 0 pauses at once.");
         pauserWhenAllAfk = c.getBoolean("pause_when_all_afk", cat, false,
                 "Also freeze the worlds (not tick events) while every online player is AFK. Off by default so AFK farms keep running.");
         pauserAfkSeconds = c.getInt("afk_seconds", cat, 300, 10, 86400, "Seconds without moving, looking around, chatting or a command before a player counts as AFK.");

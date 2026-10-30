@@ -12,7 +12,8 @@ import net.minecraft.server.dedicated.DedicatedServer;
  *
  * <p>Two levels:
  * <ul>
- *   <li><b>Deep pause</b>: nobody is online. {@code MixinMinecraftServerPauser} skips the world loop,
+ *   <li><b>Deep pause</b>: nobody has been online for {@code empty_grace_seconds} (30 by default,
+ *       so mods can finish what the last logout started). {@code MixinMinecraftServerPauser} skips the world loop,
  *       the {@code ServerTickEvent} posts and autosaves, leaving networking and scheduled tasks so the
  *       next login still gets in. The world is saved once as the pause begins. Mods that tick from
  *       tick events (Immersive Vehicles, IC2, FAWE's queue) stop too. With {@code pause_dynmap},
@@ -31,6 +32,8 @@ public final class ServerPauser {
     private static boolean loggedPaused;
     private static Boolean sumPauserActive;
     private static int deepTicks;
+    private static final EmptyGrace EMPTY_GRACE = new EmptyGrace();
+    private static boolean loggedGrace;
 
     private ServerPauser() {
     }
@@ -51,11 +54,19 @@ public final class ServerPauser {
         }
 
         int players = server.getPlayerList().getCurrentPlayerCount();
+        long graceNanos = c.pauserEmptyGraceSeconds * 1_000_000_000L;
+        long now = System.nanoTime();
+        boolean emptyLongEnough = EMPTY_GRACE.update(players, graceNanos, now);
+        boolean inGrace = EMPTY_GRACE.waiting(graceNanos, now);
+        if (inGrace && !loggedGrace && !wasDeep) {
+            Ldfx.LOGGER.info("LDFX pauser: nobody online; pausing in {} s unless someone joins", c.pauserEmptyGraceSeconds);
+        }
+        loggedGrace = inGrace;
         String reason = null;
-        if (players <= 0) {
+        if (players <= 0 && emptyLongEnough) {
             reason = "0 players online";
             deepPaused = true;
-        } else if (c.pauserWhenAllAfk && AfkTracker.allAfk(server, c.pauserAfkSeconds)) {
+        } else if (players > 0 && c.pauserWhenAllAfk && AfkTracker.allAfk(server, c.pauserAfkSeconds)) {
             reason = "all " + players + " online player(s) AFK";
         }
         paused = reason != null;
