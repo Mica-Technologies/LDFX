@@ -81,6 +81,9 @@ public final class ServerPauser {
         }
 
         if (deepPaused) {
+            if (!wasDeep) {
+                McmcpPauseNotice.declare("LDFX pauser");
+            }
             if (c.pauserDynmap && (!wasDeep || ++deepTicks % 100 == 0)) {
                 // Re-applied every 5 s in case Dynmap recomputes its TPS pause on its own.
                 DynmapPause.pause();
@@ -94,6 +97,7 @@ public final class ServerPauser {
     private static void endDynmapPause(boolean wasDeep) {
         if (wasDeep) {
             deepTicks = 0;
+            McmcpPauseNotice.declare(null);
             if (LdfxConfig.get().pauserDynmap) {
                 DynmapPause.resume();
             }
