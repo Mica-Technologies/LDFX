@@ -3,7 +3,6 @@ package com.micatechnologies.minecraft.ldfx.pauser;
 import com.micatechnologies.minecraft.ldfx.Ldfx;
 import com.micatechnologies.minecraft.ldfx.config.LdfxConfig;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 
 /**
  * Decides once per server tick whether the server pauser freezes the server, and every pauser
@@ -48,7 +47,9 @@ public final class ServerPauser {
         LdfxConfig c = LdfxConfig.get();
         paused = false;
         deepPaused = false;
-        if (!c.pauserEnabled || !(server instanceof DedicatedServer) || server.getPlayerList() == null || sumPauserActive()) {
+        // isDedicatedServer(), not instanceof DedicatedServer: that class is stripped from the
+        // client jar, so naming it here crashed every singleplayer world on its first tick.
+        if (!c.pauserEnabled || !server.isDedicatedServer() || server.getPlayerList() == null || sumPauserActive()) {
             endDynmapPause(wasDeep);
             return false;
         }
